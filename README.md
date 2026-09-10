@@ -1,1 +1,2 @@
-# Code_Alpha_project_Task3
+# CodeAlpha Task 4 - Music Player
+Open `index.html`. Includes play/pause, previous/next, playlist, song title/artist, duration, progress bar and volume control. Internet access is required for the demo MP3 URLs.

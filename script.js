@@ -1,0 +1,10 @@
+const songs=[
+{title:"Dreamy",artist:"Demo Artist",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",cover:"https://picsum.photos/id/145/500/500"},
+{title:"Energy",artist:"Demo Artist",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",cover:"https://picsum.photos/id/146/500/500"},
+{title:"Relax",artist:"Demo Artist",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",cover:"https://picsum.photos/id/147/500/500"}
+];
+const audio=document.getElementById("audio"),title=document.getElementById("title"),artist=document.getElementById("artist"),cover=document.getElementById("cover"),play=document.getElementById("play"),progress=document.getElementById("progress"),current=document.getElementById("current"),duration=document.getElementById("duration"),list=document.getElementById("playlist"),volume=document.getElementById("volume");let index=0;
+function fmt(s){if(!Number.isFinite(s))return"0:00";return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0")}
+function load(i,auto=false){index=(i+songs.length)%songs.length;let s=songs[index];audio.src=s.src;title.textContent=s.title;artist.textContent=s.artist;cover.style.backgroundImage=`url(${s.cover})`;document.querySelectorAll("#playlist li").forEach((x,n)=>x.classList.toggle("active",n===index));if(auto)audio.play().catch(()=>{})}
+songs.forEach((s,i)=>{let li=document.createElement("li");li.textContent=`${s.title} — ${s.artist}`;li.onclick=()=>load(i,true);list.appendChild(li)});
+play.onclick=()=>audio.paused?audio.play():audio.pause();document.getElementById("prev").onclick=()=>load(index-1,true);document.getElementById("next").onclick=()=>load(index+1,true);audio.onplay=()=>play.textContent="⏸";audio.onpause=()=>play.textContent="▶";audio.ontimeupdate=()=>{progress.value=audio.currentTime;progress.max=audio.duration||0;current.textContent=fmt(audio.currentTime);duration.textContent=fmt(audio.duration)};progress.oninput=()=>audio.currentTime=progress.value;volume.oninput=()=>audio.volume=volume.value;audio.onended=()=>load(index+1,true);audio.volume=.8;load(0);
